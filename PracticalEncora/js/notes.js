@@ -4,8 +4,8 @@ var app = new function () {
     this.elSave = document.getElementById('notesFormSubmit');
 
 
-    this.notes = [{ 'id': 2, 'title': 'title1', 'body': 'sample notes1' },
-    { 'id': 3, 'title': 'title2', 'body': 'sample notes2' }];
+    this.notes = [{ 'id': 1, 'title': 'title1', 'body': 'sample notes1' },
+    { 'id': 2, 'title': 'title2', 'body': 'sample notes2' }];
     this.noteId = this.notes.length + 1;
 
     /*
@@ -19,10 +19,10 @@ var app = new function () {
         var data = '';
         if (Array.isArray(this.notes) && this.notes.length) {
             this.notes.forEach(element => {
-                data += `<div class="card card` + element.id + `"><div class="card-header">`
+                data += `<div class="card  mb-3 card` + element.id + `"><div class="card-header bd-blue">`
                     + element.title +
-                    `<button class="float-end" onclick="app.deleteNotes(` + element.id + `)"><i class="bi bi-trash"></i></button>
-                    <button class="float-end" onclick="app.editNotes(`+ element.id + `)"><i class="bi bi-pen"></i></button>
+                    `<button class="float-end btn btn-outline-danger" onclick="app.deleteNotes(` + element.id + `)"><i class="bi bi-trash"></i></button>
+                    <button class="float-end btn btn-outline-secondary" onclick="app.editNotes(`+ element.id + `)"><i class="bi bi-pen"></i></button>
                     </div>
                     <div class="card-body"><p class="card-text">`
                     + element.body +
@@ -44,10 +44,10 @@ var app = new function () {
         var elTitle = document.getElementById('titleField');
         var elBody = document.getElementById('bodyField');
         var itemId = parseInt(this.elSave.getAttribute('selectedId'));
-        if (elTitle.value && elBody.value != "") {
+        if ((elTitle && elBody) && (elTitle.value && elBody.value != "")) {
             if (itemId) {
                 // edit the existing value
-                this.notes.splice(this.notes.filter(element => { element.id == itemId }), 1, {
+                this.notes.splice(this.notes.findIndex(element => { return element.id == itemId }), 1, {
                     'id': itemId, 'title': elTitle.value, 'body': elBody.value
                 });
             }
@@ -81,7 +81,8 @@ var app = new function () {
    */
     this.clearFormFields = function () {
         document.getElementById('notesForm').reset();
-        this.elSave.value = "Save";
+        if (this.elSave)
+            this.elSave.value = "Save";
         this.elSave.removeAttribute("selectedId");
 
     };
@@ -95,7 +96,7 @@ var app = new function () {
     this.deleteNotes = function (itemId) {
         // Delete the current row
         if (confirm("Do you want to delete it?") == true) {
-            this.notes.splice(this.notes.filter(element => { element.id == itemId }), 1);
+            this.notes.splice(this.notes.findIndex(element => { return element.id == itemId }), 1);
             // Display the new list
             this.fetchAllNotes();
         }
@@ -118,6 +119,8 @@ var app = new function () {
         elBody.value = selectedNotes[0].body;
     };
 
+
+
     /*
 * @purpose:Logout system by navigating to login page
 * @created: July 2022
@@ -127,7 +130,6 @@ var app = new function () {
     this.Logout = function () {
         window.location.replace("../html/login.html");
     };
-
 }
 
 /*
@@ -138,5 +140,4 @@ var app = new function () {
 */
 window.onload = function () {
     app.fetchAllNotes();
-
 }

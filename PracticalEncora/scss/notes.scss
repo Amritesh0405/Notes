@@ -1,0 +1,36 @@
+$red-color: red;
+$gray-color: #d2d2d2;
+$vt: top;
+
+html,
+body {
+  height: 100%;
+
+
+}
+
+.bd-blue {
+  color: #000;
+  background-color: #eefe6e !important;
+}
+
+.bi-asterisk {
+  font-size: 8px;
+  color: $red-color;
+  vertical-align: $vt;
+}
+
+#notesCard {
+  border-right: 1px solid $gray-color;
+  .card-text{
+    white-space: pre-wrap;
+  }
+}
+
+.card-header {
+  button {
+    font-size: 15px;
+    padding: 0 4px;
+    border: none;
+  }
+}
